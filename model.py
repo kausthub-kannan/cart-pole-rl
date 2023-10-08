@@ -1,7 +1,9 @@
+import numpy as np
+
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
-from torch.distributions import Categorical
+import torch.optim as optim
 
 class ActorCritic(nn.Module):
     def __init__(self):
@@ -16,3 +18,7 @@ class ActorCritic(nn.Module):
         action_prob = F.softmax(self.actor(x), dim=-1)
         state_values = self.critic(x)
         return action_prob, state_values
+
+model = ActorCritic()
+optimizer = optim.Adam(model.parameters(), lr=3e-2)
+eps = np.finfo(np.float32).eps.item()
